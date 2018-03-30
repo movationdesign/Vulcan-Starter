@@ -5,29 +5,31 @@ import VulcanEmail from 'meteor/vulcan:email';
 // Something like using their name in the subject or the start of the email would be awesome!
 
 async function createAutomaticRespondEmail(userInput) {
-  // Destruct the needed fields from userInput
-  const { sendToEmail, userName, emailContent } = userInput;
+    // Destruct the needed fields from userInput
+    const { sendToEmail, userName, emailContent } = userInput;
 
-  // Send email to the email the quest provided
-  await VulcanEmail.send(
-    sendToEmail,
-    "Hi! Thanks for your message ",
-    `
+    // Send email to the email the quest provided
+    await VulcanEmail.send(
+        sendToEmail,
+        "Hi! Thanks for your message ",
+        `
     <h3>You wrote:</h3>
     <p style="white-space:pre-wrap;">${emailContent}</p>
     <br>
     <p>The humans are notified - they'll get it touch soon.</p>
     `,
-  );
+    );
 
-  // Define a mail that receives notification on guest submissions
-  const toAdmin = 'Vulcan Admin <awesomeVulcanAdmin@vulcan-starter.com>';
+    // Define a mail that receives notification on guest submissions
+    const toAdmin = 'Vulcan Admin <awesomeVulcanAdmin@vulcan-starter.com>';
 
-  // Send email to the admin
-  await VulcanEmail.send(
-    toAdmin,
-    `Contact-us Form Submission: ${userName} sent a message `,
-    `
+    // Send email to the admin
+    await VulcanEmail.send(
+        toAdmin,
+        `Contact-us Form Submission: ${userName} sent a message `,
+        `
+
+    <div style="padding:32px;"
     <h3>${userName} wrote:</h3>
     <p>${emailContent}</p>
     <br>
@@ -35,7 +37,8 @@ async function createAutomaticRespondEmail(userInput) {
     <br>
     <p>If you're getting spammed - call or message your admin</p>
     <p>Best regards, Website Admin</p>
+    </div>
     `,
-  );
+    );
 }
 addCallback('contactusform.new.async', createAutomaticRespondEmail);
